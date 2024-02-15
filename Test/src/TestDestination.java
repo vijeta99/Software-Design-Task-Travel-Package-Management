@@ -1,5 +1,6 @@
 import com.example.travelManagement.entity.Activity;
 import com.example.travelManagement.entity.Destination;
+import com.example.travelManagement.entity.Passenger;
 import com.example.travelManagement.travelManagement.ActivityDestinationManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,44 +11,50 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 class TestDestination {
 
     private Destination destination;
-    private Activity activity;
-    private ActivityDestinationManager activityDestinationManager;
+    private Activity activity1;
+    private Activity activity2;
 
     @BeforeEach
     void setUp() {
-        // Assuming a destination name "Paris"
         destination = new Destination("Paris");
-        activity = mock(Activity.class);
-        activityDestinationManager = mock(ActivityDestinationManager.class);
-        when(ActivityDestinationManager.getInstance()).thenReturn(activityDestinationManager);
+        activity1 = new Activity("Eiffel Tower Tour", "A tour of the Eiffel Tower", 50.0, 20);
+        activity2 = new Activity("Louvre Museum Visit", "A visit to the Louvre Museum", 30.0, 15);
     }
 
     @Test
-    void testAddActivityWhenAlreadyPresent() {
-        when(activityDestinationManager.getDestination(activity)).thenReturn(destination);
-        destination.addActivity(activity);
-        List<Activity> activities = destination.getActivities();
-        assertFalse(activities.contains(activity), "Activity should not be added if it's already associated with a destination");
+    void testAddActivity() {
+        assertTrue(destination.getActivities().isEmpty(), "Activities list should be empty initially.");
+        destination.addActivity(activity1);
+        assertEquals(1, destination.getActivities().size(), "Activities list should contain one activity after adding.");
+        assertTrue(destination.getActivities().contains(activity1), "Activity1 should be present in the activities list.");
     }
 
     @Test
     void testRemoveActivityWithZeroEnrollment() {
-        when(activity.getCurrentEnrollment()).thenReturn(0);
-        destination.getActivities().add(activity); // Directly adding for test purposes
-        destination.removeActivity(activity);
-        List<Activity> activities = destination.getActivities();
-        assertFalse(activities.contains(activity), "Activity should be removed when current enrollment is zero");
+        destination.addActivity(activity1);
+        System.out.println(destination.getActivities());
+        destination.removeActivity(activity1);
+        System.out.println(destination.getActivities());
+       assertTrue(destination.getActivities().isEmpty(), "Activities list should be empty after removing the activity with zero enrollment.");
     }
 
     @Test
     void testRemoveActivityWithNonZeroEnrollment() {
-        when(activity.getCurrentEnrollment()).thenReturn(10);
-        destination.getActivities().add(activity); // Directly adding for test purposes
-        destination.removeActivity(activity);
-        List<Activity> activities = destination.getActivities();
-        assertTrue(activities.contains(activity), "Activity should not be removed when current enrollment is not zero");
+        destination.addActivity(activity2);
+        assertEquals(1, destination.getActivities().size(), "Activities list should contain one activity after adding.");
+        // Simulate enrolling a passenger
+        activity2.signUp(new Passenger("John Doe",1)); // Assuming Passenger class exists and signUp method increases enrollment
+        destination.removeActivity(activity2);
+        assertEquals(1, destination.getActivities().size(), "Activities list should still contain one activity after attempting to remove an activity with non-zero enrollment.");
+        assertTrue(destination.getActivities().contains(activity2), "Activity2 should still be present in the activities list after attempting to remove it with non-zero enrollment.");
     }
 }

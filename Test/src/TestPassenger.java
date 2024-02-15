@@ -3,28 +3,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static jdk.jfr.internal.jfc.model.Constraint.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class PassengerTest {
+class TestPassenger {
 
-    private Activity activity;
     private Destination destination;
+    private Activity activity;
+    private Activity activity2;
     private StandardPassenger standardPassenger;
     private GoldPassenger goldPassenger;
     private PremiumPassenger premiumPassenger;
 
     @BeforeEach
     void setUp() {
-        activity = Mockito.mock(Activity.class);
-        destination = Mockito.mock(Destination.class);
-        when(activity.getCost()).thenReturn(100.0);
-        when(activity.signUp(any(Passenger.class))).thenReturn(true);
-
+        activity = new Activity("Eiffel Tower Tour", "A tour of the Eiffel Tower", 100.0, 20);
+      destination= new Destination("Paris");
+       destination.addActivity(activity);
+       activity2 = new Activity("Eiffel Tower Lunch", "Lunch at the Eiffel Tower", 10.0, 1);
+        destination.addActivity(activity2);
         standardPassenger = new StandardPassenger("Alice", 1, 200.0);
         goldPassenger = new GoldPassenger("Bob", 2, 200.0, 10.0);
         premiumPassenger = new PremiumPassenger("Charlie", 3);
+        //make activity2 full of passengers
+        activity2.signUp(standardPassenger);
+
     }
 
     @Test
@@ -69,8 +72,23 @@ class PassengerTest {
 
     @Test
     void testPremiumPassengerSignUpForFullActivity() {
-        when(activity.isFull()).thenReturn(true);
-        assertFalse(premiumPassenger.signUpForActivity(activity, destination),
+        assertFalse(premiumPassenger.signUpForActivity(activity2, destination),
                 "Premium passenger should not be able to sign up for a full activity");
+    }
+    @Test
+    void StandardPassengerSignUpForFullActivity() {
+        StandardPassenger passenger = new StandardPassenger("John", 4, 50.0);
+        assertFalse(passenger.signUpForActivity(activity2, destination),
+                "Premium passenger should not be able to sign up for a full activity");
+        assertEquals(50.0, passenger.getBalance(),
+                "Balance should not change if sign up fails");
+    }
+    @Test
+    void GoldPassengerSignUpForFullActivity() {
+        GoldPassenger passenger = new GoldPassenger("Johnny", 4, 50.0,10);
+        assertFalse(passenger.signUpForActivity(activity2, destination),
+                "Premium passenger should not be able to sign up for a full activity");
+        assertEquals(50.0, passenger.getBalance(),
+                "Balance should not change if sign up fails");
     }
 }

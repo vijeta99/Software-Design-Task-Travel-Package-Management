@@ -24,8 +24,8 @@ public class GoldPassenger extends Passenger{
 
     @Override
     public boolean signUpForActivity(Activity activity, Destination destination) {
-        double reqBalance= activity.getCost()*(discount/100);
-        if(reqBalance>=balance)
+        double reqBalance= activity.getCost()*(1-(discount/100));
+        if(reqBalance<=balance)
         {
             if(super.signUpForActivity(activity, destination))
             {

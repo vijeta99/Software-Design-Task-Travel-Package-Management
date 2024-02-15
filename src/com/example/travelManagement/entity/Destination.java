@@ -21,7 +21,7 @@ public class Destination {
         return activities;
     }
 
-    boolean isActivityAddableToDestination(Activity activity, Destination destination)
+    public boolean isActivityAddableToDestination(Activity activity, Destination destination)
     {
         ActivityDestinationManager instance=ActivityDestinationManager.getInstance();
         if(instance.getDestination(activity)!=null)
@@ -47,8 +47,10 @@ public class Destination {
         {
             for(Activity itr:this.getActivities())
             {
-                if(itr==activity)
+                if(itr==activity) {
                     this.activities.remove(itr);
+                    return;
+                }
             }
         }
         else {
