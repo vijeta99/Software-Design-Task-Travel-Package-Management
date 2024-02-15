@@ -48,6 +48,6 @@ The following are the sub-tasks that needs to be done. The code needs to be writ
 3. Implementation : Java programming language should be used for implementation.
 4. For every class, unit test cases should be written. Junit framework can be used for unit testing the classes.
 
-![Alt text](https://github.com/vijeta99/Software-Design-Task-Travel-Package-Management/blob/main/lld.jpeg "Title")
+![Alt text](https://github.com/vijeta99/Software-Design-Task-Travel-Package-Management/blob/main/LLD.jpeg "Title")
 
 ---
