@@ -51,5 +51,8 @@ public class Destination {
                     this.activities.remove(itr);
             }
         }
+        else {
+            System.out.println("Activity cannot be removed with non zero enrollment");
+        }
     }
 }
