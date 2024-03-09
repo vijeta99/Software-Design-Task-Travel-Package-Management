@@ -4,6 +4,9 @@
 
 Design, implement and test a software system that allows travel agencies to maintain their travel packages' itinerary and passengers.
 
+# HLD
+![HLD](https://drive.google.com/file/d/12UAvQ8dpw5XciGwj9RlPReSI4orhnFoi/view)
+
 ---
 
 # Specification
